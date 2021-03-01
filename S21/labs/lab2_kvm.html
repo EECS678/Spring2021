@@ -306,12 +306,11 @@ simple instructions:</span><ol style="color: rgb(0, 0, 0); font-family: 'Times N
                 actually a script. It's contents are shown below:<pre>#!/bin/sh
 rev=$1
 if [ -z "$rev" ]; then
-        echo "Usage: build64 
-        <revision>"
+        echo "Usage: build64 &lt;revision&gt;"
         exit 1
 fi
 make-kpkg --rootcmd fakeroot --initrd --revision=$rev kernel_image 2&gt;&amp;1 | tee build.log
-                </revision></pre>
+</pre>
         </li>
         &nbsp;
         <li>
