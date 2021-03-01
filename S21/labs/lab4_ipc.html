@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html
+xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="en-us" http-equiv="Content-Language" />
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<link href="https://fonts.googleapis.com/css?family=Cutive+Mono|Oswald|Roboto" rel="stylesheet">
+<title>Lab 4</title>
+<style type="text/css">
+.heading1 {
+	font-family: 'Oswald', sans-serif;
+	font-size: xx-large;
+	text-align: Center;
+	color: grey;
+}
+.heading2 {
+	font-family: 'Roboto', sans-serif;
+	font-size: large;
+}
+.body1 {
+	font-family: 'Roboto', sans-serif;
+	font-size: large;
+}
+.body2 {
+	font-family: 'Roboto', sans-serif;
+	font-size: large;
+}
+.coding1 {
+	font-family: 'Cutive Mono', monospace;
+	font-size: medium;
+}
+</style>
+</head>
+
+<body>
+
+<p class="heading1"><strong>Lab 4 - Shell, System Call, Processes and IPC</strong></p>
+<hr color="red" width="100%" size=2px>
+
+<p class="heading2">In this lab, we will use a linux environment to explore the shell, processes, system calls and inter process communication.</p>
+
+<p class="heading1">Lab Materials</p>
+<hr color="red" width="100%" size=2px>
+
+<ul class="body1">
+	<li><a href="Lab4/Lab4.pdf">Slides </a></li><br/>
+	<li><a href="Lab4/eecs678_lab4.tar">Lab materials</a></li><br/>
+	<li><a href="https://mediahub.ku.edu/media/Lab4_LabTaskSimulation/1_2yfxnjmy">Video Discussion</a></li><br/>
+	<iframe id="kaltura_player" src="https://cdnapisec.kaltura.com/p/368641/sp/36864100/embedIframeJs/uiconf_id/29817672/partner_id/368641?iframeembed=true&playerId=kaltura_player&entry_id=1_2yfxnjmy&flashvars[localizationCode]=en&amp;flashvars[leadWithHTML5]=true&amp;flashvars[sideBarContainer.plugin]=true&amp;flashvars[sideBarContainer.position]=left&amp;flashvars[sideBarContainer.clickToClose]=true&amp;flashvars[chapters.plugin]=true&amp;flashvars[chapters.layout]=vertical&amp;flashvars[chapters.thumbnailRotator]=false&amp;flashvars[streamSelector.plugin]=true&amp;flashvars[EmbedPlayer.SpinnerTarget]=videoHolder&amp;flashvars[dualScreen.plugin]=true&amp;flashvars[hotspots.plugin]=1&amp;flashvars[Kaltura.addCrossoriginToIframe]=true&amp;&wid=1_w53fysw2" width="400" height="285" allowfullscreen webkitallowfullscreen mozAllowFullScreen allow="autoplay *; fullscreen *; encrypted-media *" sandbox="allow-forms allow-same-origin allow-scripts allow-top-navigation allow-pointer-lock allow-popups allow-modals allow-orientation-lock allow-popups-to-escape-sandbox allow-presentation allow-top-navigation-by-user-activation" frameborder="0" title="Kaltura Player"></iframe><br/>
+	<p>
+		Video correction:
+		<ul>
+			<li><a href="https://mediahub.ku.edu/media/Lab4_LabTaskSimulation/1_2yfxnjmy?st=1187">19:47</a> - narration mentions standard input, but should be standard output</li>
+		</ul>
+	</p>
+</ul>
+
+<p class="heading1">Assignment</p>
+<hr color="red" width="100%" size=2px>
+<div>1. Complete the lab task specified in the Slides<br/>
+<br/><b>Desired output for Lab Task:</b><br/><br/>
+<b>inp0.txt</b>
+
+<pre>Node 0: 24.000000</pre>
+
+<b>inp1.txt</b>
+
+<pre>Node 0: 0
+Node 1: 22.000000
+Node 2: 9.750000</pre>
+
+<b>inp2.txt</b>
+
+<pre>Node 0: 27.000000
+Node 1: 22.000000
+Node 2: 9.750000
+
+<b>inp3.txt</b>
+
+<pre>Node 0: 0
+Node 1: 22.000000
+Node 2: 9.750000
+Node 3: 5.000000</pre>
+
+<b>inp4.txt</b>
+
+<pre>Node 0: 0
+Node 1: 22.000000
+Node 2: 4.666667
+Node 3: 5.000000</pre>
+</div>
+
+<div>2. Attempt extra credit only when you are done with the first task
+<br/>
+<b>Desired output for the extra credit:</b><br/><br/>
+<b>inp0.txt</b>
+<pre>Bonus: 24.000000</pre>
+
+<b>inp1.txt</b>
+<pre>Bonus: 24.000000</pre>
+
+<b>inp2.txt</b>
+<pre>Bonus: 27.000000</pre>
+
+<b>inp3.txt</b>
+<pre>Bonus: 34.000000</pre>
+
+<b>inp4.txt</b>
+<pre>Bonus: 53.500000</pre>
+</div>
+
+<p class="heading1">Evaluation</p>
+<hr color="red" width="100%" size=2px>
+
+<span class="body1"> 
+<ul>
+	<li>Lab Task: 100</li>
+	<li>Extra Credit: 15</li>
+</ul>
+
+<p style="color: red;">Update: Please check your output on the cycle servers and make sure that you are getting the desired output on the cycle servers before submission.</p>
+<div>Please compress your source code and submit through Blackboard.</div>
+
+<p title=""><a href="../../index.html">&lt; Back to the Lab Home Page</a></p>
+
+</body>
+
+</html>
