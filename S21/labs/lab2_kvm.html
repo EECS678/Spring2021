@@ -184,7 +184,7 @@ your image.</span><ol style="color: rgb(0, 0, 0); font-family: 'Times New Roman'
                 print to the given file.<br />
                 <br />
                 As an example, here is how the kvm is invoked when working remotely. The<span class="Apple-converted-space">&nbsp;</span><font face="arial">...</font><span class="Apple-converted-space">&nbsp;</span>indicates
-                the next command should be run in a separate terminal. The tail  command can be used to watch the kernel output as it writes to<span class="Apple-converted-space">&nbsp;</span><font face="arial">serial.out</font>:<pre>     qemu-system-x86_64 -hda your_first_name.qcow -m 512M -redir tcp:12345::22 -nographic -serial file:./serial.out
+                the next command should be run in a separate terminal. The tail  command can be used to watch the kernel output as it writes to<span class="Apple-converted-space">&nbsp;</span><font face="arial">serial.out</font>:<pre>     qemu-system-x86_64 -hda your_first_name.qcow -m 512M -net user,hostfwd=tcp::12345-:22 -net nic -nographic -serial file:./serial.out
     ...
      ssh -p12345 -l root localhost
     ...
