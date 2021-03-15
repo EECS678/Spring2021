@@ -1,0 +1,139 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="en-us" http-equiv="Content-Language" />
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>Signals</title>
+<style type="text/css">
+.auto-style1 {
+	font-size: xx-large;
+}
+.auto-style2 {
+	font-size: large;
+}
+</style>
+</head>
+
+<body title="Lab 6 - POSIX Signals">
+
+<table style="width: 100%">
+	<tr>
+		<td bgcolor="#C0C0C0" class="auto-style1">
+		<b style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: x-large; font-style: normal; font-variant: normal; letter-spacing: normal; line-height: normal; orphans: auto; text-align: -webkit-left; text-indent: 0px; text-transform: none; white-space: normal; widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(204, 204, 204);">
+		Lab 6: POSIX Signals</b></td>
+	</tr>
+</table>
+<p style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: large; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255);">
+In this lab, we will learn about using POSIX (Unix) signals. The POSIX standard 
+for signals, as with most of its components was based on UNIX semantics, but 
+generalized to avoid explicitly endorsing one version of UNIX or another. The 
+POSIX standard for signals and other aspects of system support are often 
+supported by other operating systems. As with the other labs in this class we 
+will experiment with signals in the context of Linux. We will also construct a 
+small program which associates signal handlers with a few signals to give more 
+interesting functionality to the starter code provided.</p>
+<p style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: large; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255);">
+In this lab we will ensure you see how signals are used by BASH to support job 
+control, which is an interesting feature, if slightly less widely used than it 
+was a number of years ago. We will also look at a simple user program and change 
+it in ways demonstrating:</p>
+<ul style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: large; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255);">
+	<li>Definition of signal handlers</li>
+	<li>Association of handlers and signals</li>
+	<li>Use of system calls related to signals: sigaction(...), alarm(...), pause()</li>
+</ul>
+<p style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: large; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255);">
+</p>
+<p>&nbsp;</p>
+<table style="width: 100%">
+	<tr>
+		<td bgcolor="#C0C0C0" class="auto-style2"><strong>Lab Materials</strong></td>
+	</tr>
+</table>
+<ol>
+	<li><a href="Lab6/lab6_signals.pdf">Slides</a></li><br/>
+	<li><a href="Lab6/eecs678_lab6.tar">Lab Files</a></li><br/>
+	<li><a href="https://mediahub.ku.edu/media/Lab6_Signals/1_tzs6iqs2">Video Discussion</a>(Please change video resolution setting to 1080p for better viewing)<br/><br/>
+		<iframe id="kaltura_player" src="https://cdnapisec.kaltura.com/p/368641/sp/36864100/embedIframeJs/uiconf_id/29817672/partner_id/368641?iframeembed=true&playerId=kaltura_player&entry_id=1_tzs6iqs2&flashvars[localizationCode]=en&amp;flashvars[leadWithHTML5]=true&amp;flashvars[sideBarContainer.plugin]=true&amp;flashvars[sideBarContainer.position]=left&amp;flashvars[sideBarContainer.clickToClose]=true&amp;flashvars[chapters.plugin]=true&amp;flashvars[chapters.layout]=vertical&amp;flashvars[chapters.thumbnailRotator]=false&amp;flashvars[streamSelector.plugin]=true&amp;flashvars[EmbedPlayer.SpinnerTarget]=videoHolder&amp;flashvars[dualScreen.plugin]=true&amp;flashvars[hotspots.plugin]=1&amp;flashvars[Kaltura.addCrossoriginToIframe]=true&amp;&wid=1_myfqnuug" width="400" height="285" allowfullscreen webkitallowfullscreen mozAllowFullScreen allow="autoplay *; fullscreen *; encrypted-media *" sandbox="allow-forms allow-same-origin allow-scripts allow-top-navigation allow-pointer-lock allow-popups allow-modals allow-orientation-lock allow-popups-to-escape-sandbox allow-presentation allow-top-navigation-by-user-activation" frameborder="0" title="Kaltura Player"></iframe>
+	</li>
+</ol>
+<table style="width: 100%">
+	<tr>
+		<td bgcolor="#C0C0C0" class="auto-style2"><strong>Assignment</strong></td>
+	</tr>
+</table>
+
+<p style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255);">
+For this lab, you need to complete the implementation of the<span class="Apple-converted-space">&nbsp;</span><string>signals.c</string><span class="Apple-converted-space">&nbsp;</span>program. 
+Please refer to the slides for the problem statement. In the signals.c program, the "//YOUR CODE" comments should be replaced by your code according to the given instructions.
+</p>
+
+<pre style="color: rgb(0, 0, 0); font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255);">
+	bash&gt; ./signals 
+	^C^C^C^C^C
+	Close pipe’s read end? [Y/n]: n
+
+	Pipe p’s read end is still open. Continuing
+
+	Writing to the pipe p’s write end
+
+	^C^C^C^C^C
+	Close pipe’s read end? [Y/n]: y
+
+	Closing pipe p’s read end p[0] …
+
+	Writing to the pipe p’s write end
+
+	SIGPIPE received – exiting…
+</pre>
+<p>&nbsp;</p>
+
+<pre style="color: rgb(0, 0, 0); font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255);">
+	bash&gt; ./signals 
+	^C^C^C^C^C
+	Close pipe’s read end? [Y/n]:
+
+	No response from the user! Exiting …
+</pre>
+<p>&nbsp;</p>
+
+<table style="width: 100%">
+	<tr>
+		<td bgcolor="#C0C0C0" class="auto-style2"><strong>When you're finished</strong></td>
+	</tr>
+</table>
+<p style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255);">
+Along with your finished implementation, you should answer the following questions, and submit the answers as a PDF report:</p>
+<ol style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255);">
+	<li>There are two special signals (KILL and STOP) which are not handled by 
+	the process they are sent to. When a KILL or STOP signal is generated, the 
+	operating system itself handles this signal and kills or stops the 
+	appropriate process. Considering what you learned in today's lab, speculate 
+	as to why the system designers chose to include signals which are handled 
+	solely by the operating system.</li>
+	<li>What benefit do we gain from using the pause system call as opposed to 
+	an infinite while loop?</li>
+	<li>Why do we mask other signals while inside the signal handler?</li>
+	<li>When we implement the time out, we do not mask the SIGALRM signal. Why?</li>
+</ol>
+
+<table style="width: 100%">
+	<tr>
+		<td bgcolor="#C0C0C0" class="auto-style2"><strong>Evaluation</strong></td>
+	</tr>
+</table>
+<p style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255);">
+<ul>
+	<li>Completed signals.c - (80%)</li>
+	<li>PDF Report - (20%)</li>
+</ul>
+<p style="color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-size: medium; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: auto; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: auto; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgb(255, 255, 255);">
+Please make sure that you have tested the final version of your source code on the cycle servers, before submitting.
+</p>
+Please submit your completed signals.c along with a PDF report containing the answers to the above questions, through BlackBoard.
+<p><a href="../../index.html">&lt; Back to the Lab Home Page</a></p>
+
+</body>
+
+</html>
