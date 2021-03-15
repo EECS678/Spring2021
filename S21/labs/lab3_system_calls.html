@@ -464,7 +464,7 @@ make-kpkg --rootcmd fakeroot --initrd --revision=$rev kernel_image 2&gt;&amp;1 |
 
                 <pre style="margin-left: 40px;">sudo vi /usr/bin/kvm-kernel-build</pre>
         </li>
-        <font style="color: red;">(Screenshot)</font>
+        <font style="color: red;">(Screenshot - before executing command.)</font>
         <br/>
         &nbsp;
         <li>
@@ -490,13 +490,14 @@ make-kpkg <font style="color: red; font-size: medium; font-weight: bold;">-j 2 <
         This script takes a single argument, a revision number, which is used to
         give a unique name to your built kernel package. You always need to run this
         command from your kernel source directory. We will run it with sudo as the user. For example:<pre style="margin-left: 40px;">your_first_name@debian:~$ cd /home/your_first_name/kernel/linux-2.6.32.60/
-your_first_name@debian:~/kernel/linux-2.6.32.60$ sudo kvm-kernel-build 1
+your_first_name@debian:~/kernel/linux-2.6.32.60$ sudo kvm-kernel-build 1; whoami; date
   </pre>
-  <font style="color: red;">(Screenshot)</font>
+	<br><font style="color: red;">(Screenshot - before executing command)</font></br>
+	<br><font style="color: red;">(Screenshot - after build completes with last couple build lines and user/date information.)</font></br>
   <br/>
   <br/>
   &nbsp;
-        This will build the kernel in the KVM.
+        This will build the kernel in the KVM as well as output to terminal the corresponding user building and the approximate timestamp associated with this build.
         <br/><b><font style="color: red;">** Please emphasize on the fact that this build process can take a very long time (ranging from 30 minutes to upto more than a day). So, it is imperative that you start this lab the soonest. **</font></b><br/>
         Once you have started the build process, you can go ahead and relax, <a href="https://xkcd.com/303/">check your favorite
         website</a>. If your screen goes black, you can press a key, like the down arrow, to show output again. If for some reason, you need to leave your station for a while, you should ensure that you are not "logging out". Because, in some cases, it might kill the ongoing build process. Instead, you can lock your screen. This should ensure that your build process is continuing.<br/><br/>When the build
@@ -588,7 +589,10 @@ individual files in /usr/share/doc/*/copyright.
 Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
 permitted by applicable law.
 your_first_name@debian:~$
-  </pre>
+	</pre>
+
+	<br/><b><font style="color: red;">** Before procedding make sure you are the your_first_name user. All steps onwards must be in your_first_name user to recieve credit. **</font></b><br/>
+	
         You should see that you are running kernel version 2.6.32.60. If you want to
         double-check this from the command line inside KVM, you can do:
         <pre style="margin-left: 40px;">your_first_name@debian:~$ uname -a
@@ -650,8 +654,8 @@ Linux eecs678-kvm 2.6.32.60 #1 SMP PREEMPT Fri Mar 1 21:56:30 CST 2013 i686 GNU/
                 <br />
                 <li>
                     Issue the following command: 
-                    <pre style="margin-left: 40px;">dmesg | tail -5</pre> 
-                    <p>This prints the last 5 lines from the kernel logs. Please look for the "Hello World" message printed in the kernel logs from your system call.
+                    <pre style="margin-left: 40px;">dmesg | head -5; dmesg | tail -5</pre> 
+                    <p>This prints the first and last 5 lines from the kernel logs. Please look for the "Hello World" message printed in the kernel logs from your system call.
                     <br/><br/><i>"Hello World"</i> should be printed on the kernel logs based on the printk call in <a href="#hello">hello.c program</a></p>
                     <font style="color: red;">(Screenshot - after getting the output from dmesg)</font>
                 </li>

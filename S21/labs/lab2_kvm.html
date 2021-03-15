@@ -113,7 +113,7 @@ Table of Contents:</h3>
         </li>
         &nbsp;
         <li>
-                Use the following command to copy the base image from the cycle servers to your local machine.
+                Use the following command to copy the base image from the cycle servers to your local machine. Note the the "." in the command is referencing the local directory and is not the end of a scentence.
                 <pre>scp your_ku_online_id@cycle1.eecs.ku.edu:/srv/EECS_678/eecs678_base.qcow .</pre>
                 <font style="color: red;">(Screenshot)</font><br/>
                 <b><font style="color: red;">** If you are unable to login to the "Cycle1" servers for some reasons (most commonly timing out), then please try "Cycle2" or "Cycle3" servers **</font></b>
@@ -145,28 +145,28 @@ your image.</span><ol style="color: rgb(0, 0, 0); font-family: 'Times New Roman'
         This example boots into the image 'your_first_name.qcow' and simulates it on a
         machine with 1024M of memory:<pre>     qemu-system-x86_64 -hda your_first_name.qcow -smp 2 -m 1024M</pre>
         <font style="color: red;">(Screenshot)</font><br/><br/>
-        To allow access to the image over a port, add <b>-redir tcp:[your-port]::22</b> at the end of the line (Optional):
-        <pre>qemu-system-x86_64 -hda your_first_name.qcow -smp 2 -m 1024M -redir tcp:12345::22</pre>
+        To allow access to the image over a port, add <b>-net user,hostfwd=tcp::[your-port]-:22 -net nic</b> at the end of the line (Optional):
+        <pre>qemu-system-x86_64 -hda your_first_name.qcow -smp 2 -m 1024M -net user,hostfwd=tcp::12345-:22 -net nic</pre>
         <br />
 	<br />	
 	This command will open a graphical interface that shows how your system
         would boot on a real machine.
         The debian login username will be <b>root</b> and the password will be <b>rootpw</b> on the first login.<br />
         <p><font style="color: red"><b>Update: The sole purpose of the -redir flag is to give access to the system through SSH. 
-                Since, SSH access is optional (next step), you can choose to omit the -redir flag.</b></font></p>
+                Since, SSH access is optional (next step), you can choose to omit the -net flags and options.</b></font></p>
         <br />
         <br />
         </li>
         <li><font style="color: red;">(Optional)</font> If we do not want to use the GUI, you can log into your booted machine over a port on the same machine
         using the command:<br />
         <br />
-        <b>&gt; qemu-system-x86_64 -hda [boot-img] -m [mem] -redir tcp:[your-port]::22 -nographic<span class="Apple-converted-space">&nbsp;</span></b><br />
+        <b>&gt; qemu-system-x86_64 -hda [boot-img] -m [mem] -net user,hostfwd=tcp::[your-port]-:22 -net nic -nographic<span class="Apple-converted-space">&nbsp;</span></b><br />
         <br />
-        And in another terminal on the same machine do:<br />
+        This will output the kernel logs from the KVM onto the terminal. In another terminal on the same machine do:<br />
         <br />
         <b>&gt; ssh -p[your-port] -l [username] localhost<span class="Apple-converted-space">&nbsp;</span></b><br />
         <br />
-        As an example, these commands connect the root user over the port 12345.<pre>     qemu-system-x86_64 -hda your_first_name.qcow -m 1024M -redir tcp:12345::22
+        As an example, these commands connect the root user over the port 12345.<pre>     qemu-system-x86_64 -hda your_first_name.qcow -m 1024M -net user,hostfwd=tcp::12345-:22 -net nic
     ...
      ssh -p12345 -l root localhost
     </pre>
@@ -184,7 +184,7 @@ your image.</span><ol style="color: rgb(0, 0, 0); font-family: 'Times New Roman'
                 print to the given file.<br />
                 <br />
                 As an example, here is how the kvm is invoked when working remotely. The<span class="Apple-converted-space">&nbsp;</span><font face="arial">...</font><span class="Apple-converted-space">&nbsp;</span>indicates
-                the next command should be run in a separate terminal. The tail  command can be used to watch the kernel output as it writes to<span class="Apple-converted-space">&nbsp;</span><font face="arial">serial.out</font>:<pre>     qemu-system-x86_64 -hda your_first_name.qcow -m 512M -redir tcp:12345::22 -nographic -serial file:./serial.out
+                the next command should be run in a separate terminal. The tail  command can be used to watch the kernel output as it writes to<span class="Apple-converted-space">&nbsp;</span><font face="arial">serial.out</font>:<pre>     qemu-system-x86_64 -hda your_first_name.qcow -m 512M -net user,hostfwd=tcp::12345-:22 -net nic -nographic -serial file:./serial.out
     ...
      ssh -p12345 -l root localhost
     ...
@@ -347,14 +347,15 @@ make-kpkg <font style="color: red; font-size: medium; font-weight: bold;">-j 2 <
         
         This script takes a single argument, a revision number, which is used to
         give a unique name to your built kernel package. You always need to run this
-        command from your kernel source directory. We will run it with sudo as the user. For example:<pre>your_first_name@debian:~$ cd /home/your_first_name/kernel/linux-2.6.32.60/
-your_first_name@debian:~/kernel/linux-2.6.32.60$ sudo kvm-kernel-build 1
+        command from your kernel source directory. We will run it with sudo as the user and also return the compiling user as well as date and time that the build finishes. For example:<pre>your_first_name@debian:~$ cd /home/your_first_name/kernel/linux-2.6.32.60/
+your_first_name@debian:~/kernel/linux-2.6.32.60$ sudo kvm-kernel-build 1; whoami; date
   </pre>
-  <font style="color: red;">(Screenshot)</font>
+	<br><font style="color: red;">(Screenshot - before running command)</font></br>
+	<br><font style="color: red;">(Screenshot - after running command. Include last couple lines of build, user, and date.)</font></br>
   <br/>
   <br/>
   &nbsp;
-        This will build the kernel in the KVM. 
+        This will build the kernel in the KVM and print out a date that should roughly match that displayed the full system information. 
         <br/><b><font style="color: red;">** Please emphasize on the fact that this build process can take a very long time (ranging from 30 minutes to upto more than a day). So, it is imperative that you start this lab the soonest. **</font></b><br/>
         Once you have started the build process, you can go ahead and relax, <a href="https://xkcd.com/303/">check your favorite
         website</a>. If your screen goes black, you can press a key, like the down arrow, to show output again. If for some reason, you need to leave your station for a while, you should ensure that you are not "logging out". Because, in some cases, it might kill the ongoing build process. Instead, you can lock your screen. This should ensure that your build process is continuing.<br/><br/>When the build
